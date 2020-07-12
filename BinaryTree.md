@@ -41,3 +41,55 @@ var isSymmetric = function (root) {
   return symmetric(root, root);
 };
 ```
+
+### 二叉树的层序遍历
+
+```javascript
+var levelOrder = function (root) {
+  let res = [];
+  if (!root) return res;
+  const recursion = function (node, level) {
+    if (res.length == level) res.push([]);
+    res[level].push(node.val);
+    if (node.left) recursion(node.left, level + 1);
+    if (node.right) recursion(node.right, level + 1);
+  }
+  recursion(root, 0)
+  return res;
+};
+```
+
+```javascript
+var levelOrder = function (root) {
+  let res = [];
+  if (!root) return res;
+  let queue = [root];
+  let level = 0;
+  while (queue.length) {
+    res.push([]);
+    let len = queue.length;  //注意缓存
+    for (let i = 0; i < len; i++) {
+      node = queue.shift();
+      res[level].push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right)
+    }
+    level++;
+  }
+  return res
+};  
+```
+
+### 将有序数组转换为二叉搜索树
+
+```javascript
+var sortedArrayToBST = function (nums) {
+  if (nums.length === 0) return null;
+  if (nums.length === 1) return new TreeNode(nums[0]);
+  const mid = Math.floor(nums.length / 2);
+  const root = new TreeNode(nums[mid]);
+  root.left = sortedArrayToBST(nums.slice(0, mid));
+  root.right = sortedArrayToBST(nums.slice(mid + 1));
+  return root;
+};
+```
