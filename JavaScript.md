@@ -1,0 +1,193 @@
+# 拷贝
+
+基本数据类型: `undefined`，`boolean`，`number`，`string`，`null`, `symbol`
+
+存放在栈内存中的简单数据段，数据大小确定，内存空间大小可以分配，是直接按值存放的，所以可以直接访问。对其进行赋值时，拷贝的是值；修改后它的原始值是不会改变的。
+
+引用类型: `object`, `array`
+
+引用类型是存放在堆内存中的，变量实际上是一个存放在栈内存的指针，这个指针指向堆内存中的地址。每个空间大小不一样，要根据情况开进行特定的分配。对其进行赋值时，拷贝的是地址空间；修改后它的原始值会一起改变。
+
+| — | 和原数据是否指向同一对象 | 第一层数据为基本数据类型 | 原数据中包含子对象 |
+| --- | --- | --- | --- |
+| 赋值 | 是 | 改变会使原数据一同改变 | 改变会使原数据一同改变 |
+| 浅拷贝 | 否 | 改变不会使原数据一同改变 | 改变会使原数据一同改变 |
+| 深拷贝 | 否 | 改变不会使原数据一同改变 | 改变不会使原数据一同改变 |
+
+示例对象:
+
+```javascript
+const user = {
+  name: 'zhaoo',
+  gender: 0,
+  social: {
+    email: 'izhaoo@163.com',
+    qq: '894519210',
+    wechat: undefined,
+  },
+  vip: null,
+  friendId: [1, 43, 23, 21]
+}
+```
+
+### 赋值
+
+```javascript
+user1 = user
+```
+
+### 浅拷贝
+
+##### assign
+
+```javascript
+const user1 = Object.assign({}, user)
+```
+
+### 深拷贝
+
+##### JSON
+
+```javascript
+user1 = JSON.parse(JSON.stringify(user))
+```
+
+##### 递归遍历
+
+```javascript
+module.exports = function clone(target) {
+  if (typeof target === 'object') {
+    let cloneTarget = Array.isArray(target) ? [] : {};
+    for (const key in target) {
+      cloneTarget[key] = clone(target[key]);
+    }
+    return cloneTarget;
+  } else {
+    return target;
+  }
+};
+```
+
+# 防抖节流
+
+### 防抖
+
+任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行
+
+搜索补全
+
+```javascript
+function debounce(fn) {
+  let timeout = null;
+  return function() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      fn.call(this, arguments);
+    }, 1000);
+  };
+}
+```
+
+### 节流
+
+指定时间间隔内只会执行一次任务
+
+懒加载监听滚动条位置、发送验证码计时器
+
+```javascript
+function throttle(fn) {
+  let canRun = true;
+  return function() {
+    if(!canRun) {
+      return;
+    }
+    canRun = false;
+    setTimeout( () => {
+      fn.call(this, arguments);
+      canRun = true;
+    }, 1000);
+  };
+}
+```
+
+# 手写源码
+
+### call
+
+```javascript
+//每个函数有this和args两个默认参数
+Function.prototype.myCall = function (context) {
+  //传入的对象为空（null,number...）时指定为全局环境
+  var context = context || window
+  //用this获取调用myCall的函数
+  //fn.call(a, 'yck', '24') => this = fn
+  context.fn = this
+  //args是伪数组，没有slice这个方法
+  var args = [...arguments].slice(1)
+  //执行并保存结果
+  var result = context.fn(...args)
+  //删除这个fn对象
+  delete context.fn
+  //返回结果
+  return result
+}
+```
+
+### apply
+
+```javascript
+Function.prototype.myApply = function (context) {
+  var context = context || window
+  context.fn = this
+  var result
+  if (arguments[1]) {
+    result = context.fn(...arguments[1])
+  } else {
+    result = context.fn()
+  }
+  delete context.fn
+  return result
+}
+```
+
+### bind
+
+```javascript
+Function.prototype.myBind = function (context) {
+  // if (typeof this !== 'function') {
+  //   throw new TypeError('Error')
+  // }
+  var fn = this
+  var args = [...arguments].slice(1)
+  return function F() {
+    if (this instanceof F) {
+      return new fn(...args, ...arguments)
+    }
+    return fn.apply(context, args.concat(...arguments))
+  }
+}
+```
+
+### new
+
+```javascript
+function new() {
+  let obj = new Object()
+  let Constructor = [].shift.call(arguments)
+  obj.__proto__ = Constructor.prototype
+  let result = Constructor.apply(obj, arguments)
+  return typeof result === 'object' ? result : obj
+}
+
+function student(name, gender) {
+  this.name = name
+  this.gender = gender
+}
+
+var zhaoo = new(student, 'zhaoo', 'male')
+```
+
+1. 创建一个空的简单JavaScript对象（即{}）；
+2. 链接该对象（即设置该对象的构造函数）到另一个对象 ；
+3. 将步骤1新创建的对象作为this的上下文 ；
+4. 如果该函数没有返回对象，则返回this。
