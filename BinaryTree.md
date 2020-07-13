@@ -10,6 +10,26 @@ var maxDepth = function (root) {
 };
 ```
 
+### 二叉树的最小深度
+
+```javascript
+var minDepth = function (root) {
+  if (!root) return 0;
+  let queue = [root];
+  let deep = 0;
+  while (queue.length) {
+    deep++;
+    let len = queue.length;
+    while (len--) {
+      const node = queue.shift();
+      if (!node.left && !node.right) return deep;
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+  }
+};
+```
+
 ### 验证二叉搜索树
 
 ```javascript
@@ -72,7 +92,7 @@ var levelOrder = function (root) {
       node = queue.shift();
       res[level].push(node.val);
       if (node.left) queue.push(node.left);
-      if (node.right) queue.push(node.right)
+      if (node.right) queue.push(node.right);
     }
     level++;
   }
