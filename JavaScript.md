@@ -191,3 +191,44 @@ var zhaoo = new(student, 'zhaoo', 'male')
 2. 链接该对象（即设置该对象的构造函数）到另一个对象 ；
 3. 将步骤1新创建的对象作为this的上下文 ；
 4. 如果该函数没有返回对象，则返回this。
+
+# 数组扁平化
+
+### 递归
+
+```javascript
+const flat = function (arr) {
+  let res = [];
+  let len = arr.length;
+  for (let i = 0; i < len; i++) {
+    if (Array.isArray(arr[i])) {
+      res = res.concat(flat(arr[i]));
+    } else {
+      res.push(arr[i]);
+    }
+  }
+  return res;
+}
+```
+
+### 字符串
+
+只针对全数字的情况。
+
+```javascript
+const flat = function (arr) {
+  return arr.toString().split(',').map(item => {
+    return Number(item);
+  });
+}
+```
+
+### Reduce
+
+```javascript
+const flat = function (arr) {
+  return arr.reduce((pre, cur) => {
+    return pre.concat(Array.isArray(cur) ? flat(cur) : cur);
+  }, []);
+}
+```
