@@ -1,3 +1,19 @@
+### 反转链表
+
+```javascript
+var reverseList = function (head) {
+  let pre = null;
+  let cur = head;
+  while (cur) {
+    let next = cur.next;
+    cur.next = pre;
+    pre = cur;
+    cur = next;
+  }
+  return pre;
+};
+```
+
 ### 删除排序链表中的重复元素
 
 ![删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)

@@ -55,7 +55,7 @@ user1 = JSON.parse(JSON.stringify(user))
 ##### 递归遍历
 
 ```javascript
-module.exports = function clone(target) {
+function clone(target) {
   if (typeof target === 'object') {
     let cloneTarget = Array.isArray(target) ? [] : {};
     for (const key in target) {
@@ -72,41 +72,42 @@ module.exports = function clone(target) {
 
 ### 防抖
 
-任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行
+在事件频发的情况下，设定一个延迟时间 `n`，`n` 秒后才触发事件；若 `n` 秒内又触发了事件，则重新计算延时。
 
-搜索补全
+举个栗子：法师读技能条，延时后开大，技能条会被打断。
 
 ```javascript
-function debounce(fn) {
-  let timeout = null;
-  return function() {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      fn.call(this, arguments);
-    }, 1000);
-  };
+var debounce = function (fn, delay) {
+  var timeout;
+  return function () {
+    if (timeout) clearTimeout(timeout);
+    var ctx = this;
+    var args = arguments;
+    timeout = setTimeout(function () {
+      fn.apply(ctx, args);
+    }, delay);
+  }
 }
 ```
 
 ### 节流
 
-指定时间间隔内只会执行一次任务
+在事件频发的情况下，每隔延迟时间 `n` 才会触发一次事件。
 
-懒加载监听滚动条位置、发送验证码计时器
+举个栗子：AK射速10发/s
 
 ```javascript
-function throttle(fn) {
-  let canRun = true;
-  return function() {
-    if(!canRun) {
-      return;
+const throttle = (fn, time) => {
+  let pre = Date.now();
+  return () => {
+    let self = this;
+    let args = arguments;
+    let now = Date.now();
+    if (now - pre > time) {
+      fn,call(self, args);
+      pre = Date.now();
     }
-    canRun = false;
-    setTimeout( () => {
-      fn.call(this, arguments);
-      canRun = true;
-    }, 1000);
-  };
+  }
 }
 ```
 
@@ -230,5 +231,35 @@ const flat = function (arr) {
   return arr.reduce((pre, cur) => {
     return pre.concat(Array.isArray(cur) ? flat(cur) : cur);
   }, []);
+}
+```
+
+# 数组去重
+
+### Set
+
+```javascript
+const unique = (arr) => {
+  return [...new Set(arr)];
+}
+```
+
+### indexOf
+
+```javascript
+const unique = (arr) => {
+  return arr.filter((val, index, arr) => {
+    return arr.indexOf(val) === index;
+  });
+}
+```
+
+### 排序
+
+```javascript
+const unique = (arr) => {
+  return arr.concat().sort().filter((val, index, arr) => {
+    return !index || val !=== arr[index - 1];
+  })
 }
 ```
