@@ -97,12 +97,12 @@ var debounce = function (fn, delay) {
 举个栗子：AK射速10发/s
 
 ```javascript
-const throttle = (fn, time) => {
-  let pre = Date.now();
-  return () => {
-    let self = this;
-    let args = arguments;
-    let now = Date.now();
+var throttle = function (fn, time) {
+  var pre = Date.now();
+  return function () {
+    var self = this;
+    var args = arguments;
+    var now = Date.now();
     if (now - pre > time) {
       fn,call(self, args);
       pre = Date.now();
