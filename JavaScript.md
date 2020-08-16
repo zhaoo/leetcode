@@ -263,21 +263,3 @@ const unique = (arr) => {
   })
 }
 ```
-
-# 斐波那契
-
-```javascript
-const fibonacci = (n) => {
-  if (n <= 2) return 1;
-  return fibonacci(n - 1) + fibonacci(n - 2);
-}
-
-const fibonacci = (n) => {
-  let temp = [1, 1, 1];
-  if (n === 1 || n === 2) return 1;
-  for (let i = 3; i <= n; i++) {
-    temp[i] = temp[i - 1] + temp[i - 2];
-  }
-  return temp[n];
-}
-```
