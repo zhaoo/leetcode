@@ -32,7 +32,7 @@ var reverseList = function (head) {
 
 ### 删除排序链表中的重复元素
 
-![删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
+[删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
 
 ```javascript
 var deleteDuplicates = function (head) {
@@ -50,7 +50,7 @@ var deleteDuplicates = function (head) {
 
 ### 合并两个有序链表
 
-![合并两个有序链表](https://leetcode-cn.com/explore/featured/card/top-interview-questions-easy/6/linked-list/44/)
+[合并两个有序链表](https://leetcode-cn.com/explore/featured/card/top-interview-questions-easy/6/linked-list/44/)
 
 > [题解](https://leetcode-cn.com/problems/merge-two-sorted-lists/solution/chun-zhao-wu-yue-ep01mergetwolistshe-bing-liang-ge/)
 
@@ -87,7 +87,7 @@ if (l1.val < l2.val) {
 
 ### 回文链表
 
-![回文链表](https://leetcode-cn.com/explore/featured/card/top-interview-questions-easy/6/linked-list/45/)
+[回文链表](https://leetcode-cn.com/explore/featured/card/top-interview-questions-easy/6/linked-list/45/)
 
 ```javascript
 var isPalindrome = function (head) {
@@ -108,7 +108,7 @@ var isPalindrome = function (head) {
 
 ### 环形链表
 
-![环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)
+[环形链表](https://leetcode-cn.com/problems/linked-list-cycle/)
 
 ```javascript
 var hasCycle = function(head) {
