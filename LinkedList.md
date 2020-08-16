@@ -1,3 +1,19 @@
+### 倒数第N个数
+
+```javascript
+let lastN = (head, n) => {
+  let low = head, fast = head;
+  for (let i = 0; i < n; i++) {
+    fast = fast.next;
+  }
+  while (fast.next) {
+    fast = fast.next;
+    low = low.next;
+  }
+  return low.val;
+}
+```
+
 ### 反转链表
 
 ```javascript
