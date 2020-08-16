@@ -104,7 +104,7 @@ var throttle = function (fn, time) {
     var args = arguments;
     var now = Date.now();
     if (now - pre > time) {
-      fn,call(self, args);
+      fn.call(self, args);
       pre = Date.now();
     }
   }
@@ -230,7 +230,7 @@ const flat = function (arr) {
 const flat = function (arr) {
   return arr.reduce((pre, cur) => {
     return pre.concat(Array.isArray(cur) ? flat(cur) : cur);
-  }, []);
+  }, []);  //不改变原数组
 }
 ```
 
