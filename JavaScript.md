@@ -281,3 +281,32 @@ const fibonacci = (n) => {
   return temp[n];
 }
 ```
+
+# Promise 限流
+
+```javascript
+p = () => {
+  return new Promise((resolve, rejected) => {
+    console.log(1)
+    resolve(Math.random())
+  })
+}
+for (let i = 0; i < 100; i++) promiseList = promiseList.concat(p)
+function promisePool(promiseList, limit, results = []) {
+  if (promiseList <= 0) {
+    return results
+  }
+  let pool = promiseList.splice(0, limit)
+  let promises = []
+  pool.forEach(element => {
+    promises.push(element())
+  });
+  Promise.all(promises).then(res => {
+    results = results.concat(...res)
+    console.log(results)
+    console.log('step finish')
+    return promisePool(promiseList, limit, results)
+  })
+}
+promisePool(promiseList, 10, [])
+```
