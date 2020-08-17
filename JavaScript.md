@@ -104,7 +104,7 @@ var throttle = function (fn, time) {
     var args = arguments;
     var now = Date.now();
     if (now - pre > time) {
-      fn,call(self, args);
+      fn.call(self, args);
       pre = Date.now();
     }
   }
@@ -230,7 +230,7 @@ const flat = function (arr) {
 const flat = function (arr) {
   return arr.reduce((pre, cur) => {
     return pre.concat(Array.isArray(cur) ? flat(cur) : cur);
-  }, []);
+  }, []);  //不改变原数组
 }
 ```
 
@@ -261,24 +261,6 @@ const unique = (arr) => {
   return arr.concat().sort().filter((val, index, arr) => {
     return !index || val !=== arr[index - 1];
   })
-}
-```
-
-# 斐波那契
-
-```javascript
-const fibonacci = (n) => {
-  if (n <= 2) return 1;
-  return fibonacci(n - 1) + fibonacci(n - 2);
-}
-
-const fibonacci = (n) => {
-  let temp = [1, 1, 1];
-  if (n === 1 || n === 2) return 1;
-  for (let i = 3; i <= n; i++) {
-    temp[i] = temp[i - 1] + temp[i - 2];
-  }
-  return temp[n];
 }
 ```
 
